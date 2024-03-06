@@ -314,7 +314,6 @@ public class PluginManager
 						try {
 							SwingUtilities.invokeAndWait(() -> {
 								try {
-									//newPluginLoaded.resetConfiguration();
 									eventBus.register(newPluginLoaded);
 									startPlugin(newPluginLoaded);
 									loadedPluginNames.add(f.getName());
