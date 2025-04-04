@@ -62,7 +62,6 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
@@ -99,9 +98,6 @@ public class PluginManager
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private Set<String> loadedPluginNames = new HashSet<>();
-
-	@Setter
-	boolean isOutdated;
 
 	@Inject
 	@VisibleForTesting
@@ -150,7 +146,7 @@ public class PluginManager
 				}
 				catch (PluginInstantiationException e)
 				{
-					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
+					log.error("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
 			}
 		});
@@ -177,7 +173,7 @@ public class PluginManager
 		}
 		catch (Throwable e)
 		{
-			log.warn("Unable to get plugin config", e);
+			log.error("Unable to get plugin config", e);
 		}
 		return null;
 	}
@@ -224,7 +220,7 @@ public class PluginManager
 		}
 		catch (Throwable ex)
 		{
-			log.warn("Unable to reset plugin configuration", ex);
+			log.error("Unable to reset plugin configuration", ex);
 		}
 	}
 
@@ -244,7 +240,7 @@ public class PluginManager
 					}
 					catch (PluginInstantiationException ex)
 					{
-						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
+						log.error("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
 						plugins.remove(plugin);
 					}
 				});
@@ -348,19 +344,14 @@ public class PluginManager
 			{
 				if (clazz.getSuperclass() == Plugin.class)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+					log.error("Class {} is a plugin, but has no plugin descriptor", clazz);
 				}
 				continue;
 			}
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
-				continue;
-			}
-
-			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
-			{
+				log.error("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
 			}
 
@@ -415,7 +406,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Error instantiating plugin!", ex);
+				log.error("Error instantiating plugin!", ex);
 			}
 
 			loaded++;
@@ -458,7 +449,7 @@ public class PluginManager
 			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
-			if (!isOutdated && sceneTileManager != null)
+			if (sceneTileManager != null)
 			{
 				final GameEventManager gameEventManager = this.sceneTileManager.get();
 				if (gameEventManager != null)
