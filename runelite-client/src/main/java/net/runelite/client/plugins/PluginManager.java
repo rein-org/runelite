@@ -69,6 +69,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.task.Schedule;
@@ -96,6 +97,7 @@ public class PluginManager
 	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
+	private Set<String> loadedPluginNames = new HashSet<>();
 
 	@Inject
 	@VisibleForTesting
@@ -286,7 +288,8 @@ public class PluginManager
 
 		for (File f : files)
 		{
-			if (f.getName().endsWith(".jar"))
+			// only run trough files that we didn't run yet so I need to add a new memory variable to store them
+			if (f.getName().endsWith(".jar") && !loadedPluginNames.contains(f.getName()))
 			{
 				log.info("Side-loading plugin {}", f);
 
@@ -300,9 +303,26 @@ public class PluginManager
 						.map(ClassInfo::load)
 						.collect(Collectors.toList());
 
-					loadPlugins(plugins, null);
-				}
-				catch (PluginInstantiationException | IOException ex)
+					List<Plugin> newPlugins = loadPlugins(plugins, null);
+
+					newPlugins.forEach(newPluginLoaded ->
+					{
+						try {
+							SwingUtilities.invokeAndWait(() -> {
+								try {
+									eventBus.register(newPluginLoaded);
+									startPlugin(newPluginLoaded);
+									loadedPluginNames.add(f.getName());
+									eventBus.post(new ExternalPluginsChanged());
+								} catch (PluginInstantiationException e) {
+									throw new RuntimeException(e);
+								}
+							});
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					});
+				} catch (PluginInstantiationException | IOException ex)
 				{
 					log.error("error sideloading plugin", ex);
 				}
@@ -429,6 +449,10 @@ public class PluginManager
 			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
+			log.debug("[DEBUGZAO] Plugin - getSimpleName()  {} is now running", plugin.getClass().getSimpleName());
+			log.debug("[DEBUGZAO] Plugin - configName()  {} is now running", plugin.getClass().getAnnotation(PluginDescriptor.class).configName());
+			log.debug("[DEBUGZAO] Plugin - description() {} is now running", plugin.getClass().getAnnotation(PluginDescriptor.class).description());
+
 			if (sceneTileManager != null)
 			{
 				final GameEventManager gameEventManager = this.sceneTileManager.get();

@@ -170,6 +170,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
 	private NavigationButton navButton;
+	private DevToolsButton refreshSidePlugins;
 
 	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
 	{
@@ -269,6 +270,7 @@ public class DevToolsPlugin extends Plugin
 		tileFlags = new DevToolsButton("Tile flags");
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
+		refreshSidePlugins = new DevToolsButton("Refresh Side Plugins");
 
 		uiDefaultsInspector = new DevToolsButton("Swing Defaults");
 
