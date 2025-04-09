@@ -171,6 +171,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton uiDefaultsInspector;
 	private DevToolsButton refreshSidePlugins;
 	private NavigationButton navButton;
+	private DevToolsButton refreshSidePlugins;
 
 	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
 	{

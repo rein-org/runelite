@@ -39,7 +39,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
-import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
@@ -68,17 +67,18 @@ class DevToolsPanel extends PluginPanel
 
 	@Inject
 	private DevToolsPanel(
-			Client client,
-			ClientThread clientThread,
-			DevToolsPlugin plugin,
-			DevToolsConfig config,WidgetInspector widgetInspector,
-			VarInspector varInspector,
-			ScriptInspector scriptInspector,
-			InventoryInspector inventoryInspector,
-			Notifier notifier,
-			InfoBoxManager infoBoxManager,
-			ScheduledExecutorService scheduledExecutorService,
-			PluginManager pluginManager)
+		Client client,
+		ClientThread clientThread,
+		DevToolsPlugin plugin,
+		DevToolsConfig config,
+		WidgetInspector widgetInspector,
+		VarInspector varInspector,
+		ScriptInspector scriptInspector,
+		InventoryInspector inventoryInspector,
+		Notifier notifier,
+		InfoBoxManager infoBoxManager,
+		ScheduledExecutorService scheduledExecutorService,
+		PluginManager pluginManager)
 	{
 		super();
 		this.client = client;
@@ -189,7 +189,7 @@ class DevToolsPanel extends PluginPanel
 
 		final JButton sidePluginsBtn = new JButton("Refresh Side Plugins");
 		sidePluginsBtn.addActionListener(e ->
-			clientThread.invoke(pluginManager::loadSideLoadPlugins));
+				clientThread.invoke(pluginManager::loadSideLoadPlugins));
 		container.add(sidePluginsBtn);
 
 		try

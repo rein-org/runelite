@@ -449,6 +449,10 @@ public class PluginManager
 			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
+			log.debug("[DEBUGZAO] Plugin - getSimpleName()  {} is now running", plugin.getClass().getSimpleName());
+			log.debug("[DEBUGZAO] Plugin - configName()  {} is now running", plugin.getClass().getAnnotation(PluginDescriptor.class).configName());
+			log.debug("[DEBUGZAO] Plugin - description() {} is now running", plugin.getClass().getAnnotation(PluginDescriptor.class).description());
+
 			if (sceneTileManager != null)
 			{
 				final GameEventManager gameEventManager = this.sceneTileManager.get();
