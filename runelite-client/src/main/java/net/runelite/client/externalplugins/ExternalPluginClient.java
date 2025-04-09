@@ -173,6 +173,7 @@ public class ExternalPluginClient
 
 	void submitPlugins(List<String> plugins)
 	{
+		plugins.clear();
 		if (plugins.isEmpty())
 		{
 			return;
