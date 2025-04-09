@@ -169,6 +169,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton shell;
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
+	private DevToolsButton refreshSidePlugins;
 	private NavigationButton navButton;
 	private DevToolsButton refreshSidePlugins;
 
