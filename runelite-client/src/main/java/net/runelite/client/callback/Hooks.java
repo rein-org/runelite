@@ -641,10 +641,10 @@ public class Hooks implements Callbacks
 				}
 			}
 
-			telemetryClient.submitError(
+/*			telemetryClient.submitError(
 				"client error",
 				sw.toString(),
-				Collections.singletonMap("coord", coord));
+				Collections.singletonMap("coord", coord));*/
 
 			if (rateLimitedError)
 			{

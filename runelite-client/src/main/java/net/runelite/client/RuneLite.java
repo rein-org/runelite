@@ -78,7 +78,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
@@ -131,9 +130,6 @@ public class RuneLite
 
 	@Inject
 	private SessionManager sessionManager;
-
-	@Inject
-	private DiscordService discordService;
 
 	@Inject
 	private ClientSessionManager clientSessionManager;
@@ -343,16 +339,12 @@ public class RuneLite
 		// Initialize UI
 		clientUI.init();
 
-		// Initialize Discord service
-		discordService.init();
-
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(pluginManager);
 		eventBus.register(externalPluginManager);
 		eventBus.register(overlayManager);
 		eventBus.register(configManager);
-		eventBus.register(discordService);
 
 		// Add core overlays
 		WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
@@ -366,11 +358,11 @@ public class RuneLite
 
 		clientUI.show();
 
-		if (telemetryClient != null)
+		/*if (telemetryClient != null)
 		{
 			telemetryClient.submitTelemetry();
 			telemetryClient.submitVmErrors(LOGS_DIR);
-		}
+		}*/
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
 		ReflectUtil.invalidateAnnotationCaches();
