@@ -112,7 +112,7 @@ public class TelemetryClient
 					.replace(username, "%USERNAME%")
 					.replace(home, "%HOME%");
 
-				submitError("vm crash", hsErr, Collections.emptyMap());
+				//submitError("vm crash", hsErr, Collections.emptyMap());
 			}
 		}
 		catch (Exception ex)

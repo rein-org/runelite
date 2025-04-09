@@ -149,7 +149,7 @@ public class InfoPanel extends PluginPanel
 			{
 				if (e.getURL().toString().equals(RUNELITE_LOGIN))
 				{
-					executor.execute(sessionManager::login);
+					//executor.execute(sessionManager::login);
 				}
 			}
 		});
