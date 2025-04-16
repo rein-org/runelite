@@ -100,6 +100,6 @@ public class CrowdsourcingPlugin extends Plugin
 	)
 	public void submitToAPI()
 	{
-		manager.submitToAPI();
+		//manager.submitToAPI();
 	}
 }
